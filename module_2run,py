@@ -1,0 +1,21 @@
+import logging, os
+
+
+# LOGGING
+
+# Set initial logging level
+logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.DEBUG)
+
+# Add logging to file
+l2f_ = logging.FileHandler(os.path.splitext(os.path.basename(__file__))[0] + ".log")
+l2f_.setLevel(logging.INFO)
+l2f_.setFormatter(logging.Formatter("%(levelname)s: %(asctime)s %(message)s"))
+logging.getLogger().addHandler(l2f_)
+
+_log = logging.getLogger(__name__)
+
+
+# MAIN
+
+def main():
+    _log.info("Do main job")
