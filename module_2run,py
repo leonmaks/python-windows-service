@@ -1,21 +1,36 @@
-import logging, os
+import logging
+import os
+from logging import FileHandler
 
 
 # LOGGING
 
-# Set initial logging level
-logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.DEBUG)
+def log_init(logger_name):
+    # Check FileHandler is NOT already in logging handlers
+    for h_ in logging.getLogger().handlers:
+        if isinstance(h_, FileHandler):
+            return logging.getLogger(logger_name)
 
-# Add logging to file
-l2f_ = logging.FileHandler(os.path.splitext(os.path.basename(__file__))[0] + ".log")
-l2f_.setLevel(logging.INFO)
-l2f_.setFormatter(logging.Formatter("%(levelname)s: %(asctime)s %(message)s"))
-logging.getLogger().addHandler(l2f_)
+    # Set initial logging level
+    logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.DEBUG)
 
-_log = logging.getLogger(__name__)
+    # Initialize FileHandler
+    l2f_ = logging.FileHandler(os.path.splitext(os.path.basename(__file__))[0] + ".log")
+    l2f_.setLevel(logging.INFO)
+    l2f_.setFormatter(logging.Formatter("%(levelname)s: %(asctime)s %(message)s"))
+    logging.getLogger().addHandler(l2f_)
+
+    return logging.getLogger(logger_name)
+
+
+_log = log_init(__name__)
 
 
 # MAIN
 
 def main():
     _log.info("Do main job")
+
+
+if __name__ == '__main__':
+    main()
